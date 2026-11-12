@@ -1721,9 +1721,15 @@ const VIEWS=['home','menu','setup','game','qs','online','how','settings','bye','
 let onlineFrom='menu', keyFrom='home';
 const PARENT={qmenu:'home',qplay:'qmenu',nbs:'home',nbg:'nbs',sps:'home',spg:'sps',spr:'sps',prs:'home',prg:'prs',lsettings:'lmenu',hsettings:'menu',menu:'home',lmenu:'home',setup:'menu',how:'menu',settings:'home',bye:'home',lsetup:'lmenu',lhow:'lmenu'};
 function backOf(t){ if(t==='online') return onlineFrom; if(t==='key') return keyFrom; return t||'home'; }
+/* per-game links: /labib, /huroof … (each folder has a stub that redirects to ?g=<slug>) */
+const SLUG_OF={lb:'labib',hx:'huroof',nb:'bint-walad',sp:'barrani',pr:'qaddir',qz:'darb'};
+const SLUG_VIEW={labib:'lmenu',huroof:'menu','bint-walad':'nbs',barrani:'sps',qaddir:'prs',darb:'qmenu'};
+const URL_BASE=location.pathname.replace(/[^/]*$/,'');
+function urlSlug(){ try{ const q=new URLSearchParams(location.search).get('g'); if(q) return q; }catch(e){} return location.pathname.split('/').filter(Boolean).pop()||''; }
+function syncUrl(v){ try{ const s=SLUG_OF[ctxG(v)], u=URL_BASE+(s||''); if(location.pathname+location.search!==u) history.replaceState(history.state,'',u+location.hash); }catch(e){} }
 function show(v){
   if(v!==view&&!['lmenu','lgame'].includes(v)) stopSpeak();
-  view=v; if(G) G.view=v;
+  view=v; if(G) G.view=v; syncUrl(v);
   VIEWS.forEach(x=>$('v-'+x).hidden=x!==v);
   const hx=['menu','setup','game','how','qs','hsettings'].includes(v);
   document.body.classList.toggle('hxt',hx); $('hive').hidden=!hx;
@@ -3786,7 +3792,7 @@ function start(data){
   data=data||{};
   if(data.G&&data.G.R){ G=data.G; buildBoard(false); renderAll(); if(G.R.winner>=0) G.R.comp.forEach(i=>hexEls[i].classList.add('lit')); }
   if(data.LG&&data.LG.words){ LG=data.LG; LG.keyOpen=false; lbRenderGrid(false); lbRenderAll(false); }
-  const v=VIEWS.includes(data.view)?data.view:'home';
+  const v=VIEWS.includes(data.view)?data.view:(SLUG_VIEW[urlSlug()]||'home');
   if(v==='game'&&G){ G.paused=false; show('game'); if(G.cur&&G.timer&&!G.cur.shown&&G.cur.remain>0){G.cur.until=performance.now()+G.cur.remain;loop();} }
   else if(v==='lgame'&&LG){ LG.paused=false; show('lgame'); if(!LG.started) lbIntro(); else lbThaw(); }
   else show(v==='game'||v==='lgame'?'home':v);

@@ -6,6 +6,14 @@
 
 https://obadahaw.github.io/DIWAN/
 
+### رابط كل لعبة
+- [لبيب](https://obadahaw.github.io/DIWAN/labib)
+- [خلية الحروف](https://obadahaw.github.io/DIWAN/huroof)
+- [بنت ولد](https://obadahaw.github.io/DIWAN/bint-walad)
+- [مين البرّاني؟](https://obadahaw.github.io/DIWAN/barrani)
+- [قدّر السعر](https://obadahaw.github.io/DIWAN/qaddir)
+- [درب القوافل](https://obadahaw.github.io/DIWAN/darb)
+
 ## التشغيل على جهازك
 لازم تنفتح من سيرفر محلي (مش بدبل كليك)، عشان الصور والأصوات والمجسّمات تنحمّل:
 
